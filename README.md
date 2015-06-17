@@ -1,2 +1,2 @@
 # atg_theme
-Tema wordpress
+Tema wordpress baseado no Odin, integração Wordpress + Bootstrap.
