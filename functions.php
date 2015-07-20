@@ -29,7 +29,7 @@ require_once get_template_directory() . '/core/classes/class-thumbnail-resizer.p
 // require_once get_template_directory() . '/core/classes/class-theme-options.php';
 // require_once get_template_directory() . '/core/classes/class-options-helper.php';
 require_once get_template_directory() . '/core/classes/class-post-type.php';
-// require_once get_template_directory() . '/core/classes/class-taxonomy.php';
+require_once get_template_directory() . '/core/classes/class-taxonomy.php';
 // require_once get_template_directory() . '/core/classes/class-metabox.php';
 // require_once get_template_directory() . '/core/classes/abstracts/abstract-front-end-form.php';
 // require_once get_template_directory() . '/core/classes/class-contact-form.php';
@@ -290,6 +290,63 @@ function home_destaque() {
     );
 }
 add_action( 'init', 'home_destaque', 1 );
+
+
+// CUSTOM POST PARA OS ITENS DO DÚVIDAS FREQUENTES
+function loja() {
+    $loja = new Odin_Post_Type(
+        'Loja', // Nome (Singular) do Post Type.
+        'loja' // Slug do Post Type.
+    );
+    $loja->set_labels(
+        array(
+            'menu_name' => __( 'Loja', 'odin' )
+        )
+    );
+    $loja->set_arguments(
+        array(
+    		'supports' 				=> array( 'title', 'editor', 'categories', 'thumbnail', 'excerpt' ),
+            'exclude_from_search' 	=> true,
+            'menu_icon' 			=> get_template_directory_uri() . '/assets/img/icone_loja.png'
+        )
+    );
+}
+add_action( 'init', 'loja', 1 );
+
+function itens_loja() {
+
+	$labels = array(
+		'name'                       => _x( 'Itens Loja', 'atg_budismo' ),
+		'singular_name'              => _x( 'Item', 'atg_budismo' ),
+		'menu_name'                  => __( 'Itens Loja', 'atg_budismo' ),
+		'all_items'                  => __( 'Todas os Itens', 'atg_budismo' ),
+		'parent_item'                => __( 'Parente Itens', 'atg_budismo' ),
+		'parent_item_colon'          => __( 'Parente Item', 'atg_budismo' ),
+		'new_item_name'              => __( 'Nova Item', 'atg_budismo' ),
+		'add_new_item'               => __( 'Adicionar Item', 'atg_budismo' ),
+		'edit_item'                  => __( 'Editar Item', 'atg_budismo' ),
+		'update_item'                => __( 'Atualizar Item', 'atg_budismo' ),
+		'separate_items_with_commas' => __( 'Separate items', 'atg_budismo' ),
+		'search_items'               => __( 'Buscar Itens', 'atg_budismo' ),
+		'add_or_remove_items'        => __( 'Adicionar ou Remover Itens', 'atg_budismo' ),
+		'choose_from_most_used'      => __( 'Selecionar itens mais usados', 'atg_budismo' ),
+		'not_found'                  => __( 'Nada encontrado', 'atg_budismo' ),
+	);
+	$args = array(
+		'labels'                     => $labels,
+		'hierarchical'               => true,
+		'rewrite' 					 => array('hierarchical' => true),
+		'public'                     => true,
+		'show_ui'                    => true,
+		'show_admin_column'          => true,
+		'show_in_nav_menus'          => false,
+		'show_tagcloud'              => true,
+		'query_var'                  => 'tax_itens',
+	);
+	register_taxonomy( 'itens_loja', 'loja', $args );
+}
+// Hook into the 'init' action
+add_action( 'init', 'itens_loja', 1 );
 
 // OCULTANDO A BARRA ADMIN NO FRONT
 // add_filter('show_admin_bar', '__return_false');
